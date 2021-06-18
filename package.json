@@ -1,0 +1,45 @@
+{
+  "name": "json-mock-editor",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "watch": "vue-cli-service serve --watchAll"
+  },
+  "description": "JsonMockEditor",
+  "author": {
+    "name": ""
+  },
+  "dependencies": {
+    "jquery": "^3.6.0",
+    "vue": "^2.6.12"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "^4.5.13",
+    "eslint": "^7.26.0",
+    "vue-template-compiler": "^2.6.12"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
