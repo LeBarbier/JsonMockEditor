@@ -11,7 +11,7 @@
             <textarea id="modelEditor">{ }</textarea>
         </div>
         
-        <button class="mockGenerationButton" id="mockGeneration" @click="generateMock">Générer</button>
+        <button class="mockGenerationButton" id="mockGeneration" @click="genererMock">Générer</button>
     </div>
 </template>
 
@@ -25,25 +25,41 @@
         data() {
             return {
                 mockNbrRepetition: 1,
-                modelEditor: {},
-                model: ""
+                model: {}
             };
         },
         mounted() {
-            this.modelEditor = CodeMirror.fromTextArea(document.getElementById('modelEditor'), { mode: JsMode });
-            this.modelEditor.setSize("425", "400");
-
-            this.model = this.obtenirModelEditor;
+            this.model = CodeMirror.fromTextArea(document.getElementById('modelEditor'), { mode: JsMode });
+            this.model.setSize("425", "400");
+        },
+        props: {
+            mock: {
+                type: Array,
+                required: false
+            }
         },
         computed: {
-            obtenirModelEditor() {
-                return JSON.parse(this.modelEditor.getValue().replaceAll("\n", "").replaceAll("\t", ""));
+            mockToString() {
+                return JSON.stringify(this.mock[0], null, "\t");
+            },
+            modelFormatteJson() {
+                return JSON.parse(this.model.getValue().replaceAll("\n", "").replaceAll("\t", ""));
             }
         },
         methods: {
-            generateMock() {
-                console.log(this.obtenirModelEditor);
-                this.$emit("genererMock", { nbrMock: this.mockNbrRepetition, model: this.obtenirModelEditor });
+            genererMock() {
+                console.log(this.modelFormatteJson);
+                this.$emit("genererMock", { nbrMock: this.mockNbrRepetition, model: this.modelFormatteJson });
+            },
+            genererModel() {
+                var modelConcatene = this.mockToString;
+
+                return modelConcatene;
+            }
+        },
+        watch: {
+            mock() {
+                this.model.setValue(this.genererModel());
             }
         }
     };

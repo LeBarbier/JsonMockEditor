@@ -1,7 +1,13 @@
 ﻿<template>
     <div class="infos">
-        <h3>Commandes :</h3>
-        <table>
+        <h4>
+            Créer un model JSON et "Générer" pour pouvoir obtenir une liste de ce model.
+            <br />
+            Ajouter une liste d'objet JSON et "Obtenir model" pour obtenir le model du premier objet de la liste.
+        </h4>
+
+        <h3 v-show="false">Commandes :</h3>
+        <table v-show="false">
             <thead>
                 <tr>
                     <th>Commande</th>
@@ -35,8 +41,14 @@
 
 <style scoped>
     .infos {
-        margin-top: 10px;
+        margin-top: 16px;
         width: 100%;
+        text-align: center;
+    }
+
+    h4 {
+        line-height: 22px;
+        font-weight: 400;
     }
 
     td, th {

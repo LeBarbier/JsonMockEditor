@@ -2,11 +2,14 @@
     <div class="home">
         <div :class="{ greyedOut: afficherModalAjoutParam }">
             <div class="gestionModel">
-                <model @genererMock="(value) => genererMock(value)"/>
+                <model :mock="mock"
+                       @genererMock="(value) => genererMock(value)"/>
             </div>
 
             <div class="gestionMock">
-                <mock :nbr-mock="nbrMock" :model="model" />
+                <mock :nbr-mock="nbrMock"
+                      :model="model"
+                      @obtenirModel="(value) => obtenirModel(value)"/>
             </div>
         </div>
 
@@ -26,8 +29,8 @@
         data() {
             return {
                 model: {},
-                mock: '',
-                nbrMock: 0,
+                mock: [],
+                nbrMock: 1,
                 afficherModalAjoutParam: false
             };
         },
@@ -41,6 +44,9 @@
             genererMock(value) {
                 this.model = value.model;
                 this.nbrMock = value.nbrMock;
+            },
+            obtenirModel(value) {
+                this.mock = value.mock;
             },
             fermerModal(param) {
                 if (param !== null) {

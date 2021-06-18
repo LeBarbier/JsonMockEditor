@@ -9,7 +9,7 @@
             <textarea id="mockEditor">{ }</textarea>
         </div>
 
-        <button>Obtenir model</button>
+        <button class="obtenirModelButton" id="obtenirModel" @click="obtenirModel">Obtenir model</button>
     </div>
 </template>
 
@@ -22,13 +22,13 @@
         name: 'Mock',
         data() {
             return {
-                mock: {}
+                mock: []
             };
         },
         props: {
             model: {
                 type: Object,
-                required: true
+                required: false
             },
             nbrMock: {
                 type: Number,
@@ -39,26 +39,46 @@
         computed: {
             modelToString() {
                 return JSON.stringify(this.model, null, "\t");
+            },
+            mockFormatteJson() {
+                return JSON.parse(this.mock.getValue().replaceAll("\n", "").replaceAll("\t", ""));
             }
         },
         methods: {
+            obtenirModel() {
+                console.log(this.mockFormatteJson);
+                this.$emit("obtenirModel", { mock: this.mockFormatteJson });
+            },
             genererMock() {
-                var modelConcatene = this.modelToString;
+                switch (this.nbrMock) {
+                    case 0:
+                        return "";
+                        break;
+                    case 1:
+                        return "[" + this.modelToString + "]";
+                        break;
+                    default:
+                        return this.concatenerModel();
+                        break;
+                }
+            },
+            concatenerModel() {
+                var modelConcatene = "[" + this.modelToString;
                 var i = 1;
 
-                while (this.nbrMock > 1 && i < this.nbrMock) {
+                while (i < this.nbrMock) {
                     modelConcatene += ", \n" + this.modelToString;
                     i++;
                 }
+
+                modelConcatene += "]";
 
                 return modelConcatene;
             }
         },
         mounted() {
-            var mockEditor = CodeMirror.fromTextArea(document.getElementById('mockEditor'), { mode: JsMode });
-            mockEditor.setSize("425", "400");
-
-            this.mock = mockEditor
+            this.mock = CodeMirror.fromTextArea(document.getElementById('mockEditor'), { mode: JsMode });
+            this.mock.setSize("425", "400");
         },
         watch: {
             model() {
