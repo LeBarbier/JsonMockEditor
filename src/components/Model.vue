@@ -1,47 +1,49 @@
 ﻿<template>
     <div class="model">
-        <textarea id="modelTextArea" v-model="model"></textarea>
+        <div class="params">
+            <div>
+                <label for="mockNbrRepetition">Nombre de répétion du model : </label>
+                <input v-model.number="mockNbrRepetition" id="mockNbrRepetition" type="number" />
+            </div>
+        </div>
+
+        <div class="model__editor">
+            <textarea id="modelEditor">{ }</textarea>
+        </div>
+        
+        <button class="mockGenerationButton" id="mockGeneration" @click="generateMock">Générer</button>
     </div>
 </template>
 
 <script>
+    import CodeMirror from "../../codemirror/lib/codemirror.js";
+    import JsMode from "../../codemirror/mode/javascript/javascript.js";
+    import('../../codemirror/lib/codemirror.css');
+    
     export default {
         name: 'Model',
         data() {
             return {
-                model: '',
-                modelJSON: null
+                mockNbrRepetition: 1,
+                modelEditor: {},
+                model: ""
             };
         },
         mounted() {
-            this.addKeyDownEventListener();
-        },
-        watch: {
-            model: function () {
-                try {
-                    this.modelJSON = JSON.parse(this.model);
-                    this.model = JSON.stringify(this.modelJSON, null, '\t');
+            this.modelEditor = CodeMirror.fromTextArea(document.getElementById('modelEditor'), { mode: JsMode, lineNumbers: true });
+            this.modelEditor.setSize("425", "400");
 
-                    this.$emit('jsonUnparsable', false);
-                    this.$emit('model', this.model);
-                } catch {
-                    this.$emit('jsonUnparsable', true);
-                }
+            this.model = this.obtenirModelEditor;
+        },
+        computed: {
+            obtenirModelEditor() {
+                return JSON.parse(this.modelEditor.getValue().replaceAll("\n", "").replaceAll("\t", ""));
             }
         },
         methods: {
-            addKeyDownEventListener() {
-                document.getElementById('modelTextArea').addEventListener('keydown', function (e) {
-                    if (e.key == 'Tab') {
-                        e.preventDefault();
-                        var start = this.selectionStart;
-                        var end = this.selectionEnd;
-
-                        this.value = this.value.substring(0, start) + "\t" + this.value.substring(end);
-
-                        this.selectionStart = this.selectionEnd = start + 1;
-                    }
-                });
+            generateMock() {
+                console.log(this.obtenirModelEditor);
+                this.$emit("genererMock", this.obtenirModelEditor);
             }
         }
     };
@@ -49,19 +51,18 @@
 
 <style scoped>
     .model {
-        height: 500px;
-        width: 98%;
         padding: 3px;
+    }
+
+    .model__editor {
+        margin: 15px 0;
         border: 1px solid black;
     }
 
-    .model textarea {
+    .params {
+        border: 1px solid black;
         width: 98%;
-        height: 98%;
-        margin: 0 auto;
+        margin-bottom: 4px;
         padding: 2px;
-        resize: none;
-        font-size: 16px;
-        font-family: monospace;
     }
 </style>
