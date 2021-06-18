@@ -2,12 +2,11 @@
     <div class="home">
         <div :class="{ greyedOut: afficherModalAjoutParam }">
             <div class="gestionModel">
-                <!--<div v-if="jsonUnparsable" class="jsonError">Erreur lors du JSON.parse</div>-->
                 <model @genererMock="(value) => genererMock(value)"/>
             </div>
 
             <div class="gestionMock">
-                <mock :mock="mock" />
+                <mock :nbr-mock="nbrMock" :model="model" />
             </div>
         </div>
 
@@ -28,6 +27,7 @@
             return {
                 model: {},
                 mock: '',
+                nbrMock: 0,
                 afficherModalAjoutParam: false
             };
         },
@@ -37,14 +37,10 @@
             'modal-ajout-param': ModalAjoutParam,
             'infos': Infos
         },
-        //computed: {
-        //    showJsonError() {
-        //        return this.jsonUnparsable;
-        //    }
-        //},
         methods: {
             genererMock(value) {
-                this.model = value;
+                this.model = value.model;
+                this.nbrMock = value.nbrMock;
             },
             fermerModal(param) {
                 if (param !== null) {

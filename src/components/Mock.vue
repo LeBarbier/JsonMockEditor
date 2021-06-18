@@ -22,14 +22,51 @@
         name: 'Mock',
         data() {
             return {
-                model: {}
+                mock: {}
             };
         },
+        props: {
+            model: {
+                type: Object,
+                required: true
+            },
+            nbrMock: {
+                type: Number,
+                required: false,
+                default: 0
+            }       
+        },
+        computed: {
+            modelToString() {
+                return JSON.stringify(this.model, null, "\t");
+            }
+        },
+        methods: {
+            genererMock() {
+                var modelConcatene = this.modelToString;
+                var i = 1;
+
+                while (this.nbrMock > 1 && i < this.nbrMock) {
+                    modelConcatene += ", \n" + this.modelToString;
+                    i++;
+                }
+
+                return modelConcatene;
+            }
+        },
         mounted() {
-            var mockEditor = CodeMirror.fromTextArea(document.getElementById('mockEditor'), { mode: JsMode, lineNumbers: true });
+            var mockEditor = CodeMirror.fromTextArea(document.getElementById('mockEditor'), { mode: JsMode });
             mockEditor.setSize("425", "400");
 
-            this.model = mockEditor
+            this.mock = mockEditor
+        },
+        watch: {
+            model() {
+                this.mock.setValue(this.genererMock());
+            },
+            nbrMock() {
+                this.mock.setValue(this.genererMock());
+            }
         }
     };
 </script>

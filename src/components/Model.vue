@@ -30,7 +30,7 @@
             };
         },
         mounted() {
-            this.modelEditor = CodeMirror.fromTextArea(document.getElementById('modelEditor'), { mode: JsMode, lineNumbers: true });
+            this.modelEditor = CodeMirror.fromTextArea(document.getElementById('modelEditor'), { mode: JsMode });
             this.modelEditor.setSize("425", "400");
 
             this.model = this.obtenirModelEditor;
@@ -43,7 +43,7 @@
         methods: {
             generateMock() {
                 console.log(this.obtenirModelEditor);
-                this.$emit("genererMock", this.obtenirModelEditor);
+                this.$emit("genererMock", { nbrMock: this.mockNbrRepetition, model: this.obtenirModelEditor });
             }
         }
     };
