@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "watch": "vue-cli-service serve --watchAll"
+    "watch": "vue-cli-service serve --watchAll",
+    "start": "vue-cli-service serve --port 80",
+    "build": "vue-cli-service build"
   },
   "description": "JsonMockEditor",
   "author": {
-    "name": ""
+    "name": "Guillaume Barbier"
   },
   "dependencies": {
     "jquery": "^3.6.0",
