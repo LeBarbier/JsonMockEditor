@@ -4,6 +4,8 @@
             Créer un model JSON et "Générer" pour pouvoir obtenir une liste de ce model.
             <br />
             Ajouter une liste d'objet JSON et "Obtenir model" pour obtenir le model du premier objet de la liste.
+            <br />
+            "Ajouter un paramètre" permet d'ajouter un paramètre avec une valeur par défaut à tout les objets de la liste.
         </h4>
 
         <h3 v-show="false">Commandes :</h3>

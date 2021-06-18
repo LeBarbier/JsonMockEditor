@@ -1,8 +1,7 @@
 ﻿<template>
     <div class="mock">
-        <div class="params" v-show="false">
-            <label>Nombre de répétion du model : </label>
-            <input type="number" />
+        <div class="params" >
+            <button @click="toggleModal">Ajouter un paramètre</button>
         </div>
 
         <div class="mock__editor">
@@ -22,7 +21,7 @@
         name: 'Mock',
         data() {
             return {
-                mock: []
+                mock: {}
             };
         },
         props: {
@@ -34,7 +33,11 @@
                 type: Number,
                 required: false,
                 default: 0
-            }       
+            },
+            nouveauParam: {
+                type: Object,
+                required: false
+            }
         },
         computed: {
             modelToString() {
@@ -74,6 +77,17 @@
                 modelConcatene += "]";
 
                 return modelConcatene;
+            },
+            toggleModal() {
+                this.$emit("toggleModal");
+            },
+            ajouterNouveauParam(param) {
+                var mockAvecNouveauParam = [];
+                this.mockFormatteJson.forEach(obj => {
+                    obj[param.nom] = param.valeur
+                    mockAvecNouveauParam.push(obj);
+                });
+                this.mock.setValue(JSON.stringify(mockAvecNouveauParam, null, "\t"));
             }
         },
         mounted() {
@@ -86,6 +100,9 @@
             },
             nbrMock() {
                 this.mock.setValue(this.genererMock());
+            },
+            nouveauParam() {
+                this.ajouterNouveauParam(this.nouveauParam);
             }
         }
     };
@@ -106,5 +123,6 @@
         width: 98%;
         margin-bottom: 4px;
         padding: 2px;
+        text-align:center;
     }
 </style>

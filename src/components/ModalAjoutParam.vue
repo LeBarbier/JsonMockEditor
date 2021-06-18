@@ -30,10 +30,10 @@
         },
         methods: {
             fermer() {
-                this.$emit('fermerModal', null);
+                this.$emit('toggleModal', null);
             },
             ajouter() {
-                this.$emit('fermerModal', { nom: this.nom, valeur: this.valeur });
+                this.$emit('toggleModal', { nom: this.nom, valeur: this.valeur });
             }
         }
     }

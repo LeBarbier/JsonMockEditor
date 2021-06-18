@@ -9,11 +9,13 @@
             <div class="gestionMock">
                 <mock :nbr-mock="nbrMock"
                       :model="model"
-                      @obtenirModel="(value) => obtenirModel(value)"/>
+                      :nouveau-param="nouveauParam"
+                      @obtenirModel="(value) => obtenirModel(value)"
+                      @toggleModal="() => afficherModalAjoutParam = !afficherModalAjoutParam" />
             </div>
         </div>
 
-        <modal-ajout-param v-if="afficherModalAjoutParam" @fermerModal="fermerModal" />
+        <modal-ajout-param v-if="afficherModalAjoutParam" @toggleModal="(value) => fermerModal(value)" />
         <infos />
     </div>
 </template>
@@ -31,6 +33,7 @@
                 model: {},
                 mock: [],
                 nbrMock: 1,
+                nouveauParam: {},
                 afficherModalAjoutParam: false
             };
         },
@@ -50,7 +53,7 @@
             },
             fermerModal(param) {
                 if (param !== null) {
-
+                    this.nouveauParam = param;
                 }
 
                 this.afficherModalAjoutParam = !this.afficherModalAjoutParam;
