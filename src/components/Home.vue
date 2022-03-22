@@ -15,7 +15,8 @@
             </div>
         </div>
 
-        <modal-ajout-param v-if="afficherModalAjoutParam" @toggleModal="(value) => fermerModal(value)" />
+        <modal-ajout-param v-if="afficherModalAjoutParam"
+                           @toggleModal="(value) => fermerModal(value)" />
         <infos />
     </div>
 </template>
@@ -52,7 +53,7 @@
                 this.mock = value.mock;
             },
             fermerModal(param) {
-                if (param !== null) {
+                if (param !== null && param.nom !== '' && param.valeur !== '') {
                     this.nouveauParam = param;
                 }
 

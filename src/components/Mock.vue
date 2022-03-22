@@ -84,7 +84,11 @@
             ajouterNouveauParam(param) {
                 var mockAvecNouveauParam = [];
                 this.mockFormatteJson.forEach(obj => {
-                    obj[param.nom] = param.valeur
+                    if (!param.ecraser && !Object.prototype.hasOwnProperty.call(obj, param.nom)) {
+                        obj[param.nom] = param.valeur;
+                    } else if (param.ecraser) {
+                        obj[param.nom] = param.valeur;
+                    }
                     mockAvecNouveauParam.push(obj);
                 });
                 this.mock.setValue(JSON.stringify(mockAvecNouveauParam, null, "\t"));

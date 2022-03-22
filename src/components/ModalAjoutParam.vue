@@ -12,6 +12,13 @@
                 <label for="valeurDefautParam">Valeur par défaut :</label>
                 <input id="valeurDefautParam" type="text" v-model="valeur" />
             </div>
+
+            <br />
+
+            <div>
+                <label for="ecraserValeurExistante">Écraser la valeur existante : </label>
+                <input id="ecraserValeurExistante" type="checkbox" v-model="ecraser" />
+            </div>
         </div>
 
         <button @click="fermer">Annuler</button>
@@ -25,7 +32,8 @@
         data() {
             return {
                 nom: '',
-                valeur: ''
+                valeur: '',
+                ecraser: false
             }
         },
         methods: {
@@ -33,7 +41,7 @@
                 this.$emit('toggleModal', null);
             },
             ajouter() {
-                this.$emit('toggleModal', { nom: this.nom, valeur: this.valeur });
+                this.$emit('toggleModal', { nom: this.nom, valeur: this.valeur, ecraser: this.ecraser });
             }
         }
     }
@@ -45,7 +53,6 @@
         position: absolute;
         background-color: white;
         border: 1px solid black;
-        height: 115px;
         width: 425px;
         top: 125px;
         left: calc(48% - 200px);
@@ -64,7 +71,6 @@
     .infosParam input {
         margin: 0px 12px;
         float: right;
-        width: 50%;
     }
 
     button {
