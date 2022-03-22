@@ -2,6 +2,7 @@
     <div class="mock">
         <div class="params" >
             <button @click="toggleModal">Ajouter un paramètre</button>
+            <button @click="trierParametres">Trier les paramètres</button>
         </div>
 
         <div class="mock__editor">
@@ -41,10 +42,25 @@
         },
         computed: {
             modelToString() {
-                return JSON.stringify(this.model, null, "\t");
+                return this.convertirJsonEnString(this.model);
             },
             mockFormatteJson() {
                 return JSON.parse(this.mock.getValue().replaceAll("\n", "").replaceAll("\t", ""));
+            }
+        },
+        mounted() {
+            this.mock = CodeMirror.fromTextArea(document.getElementById('mockEditor'), { mode: JsMode });
+            this.mock.setSize("425", "400");
+        },
+        watch: {
+            model() {
+                this.mock.setValue(this.genererMock());
+            },
+            nbrMock() {
+                this.mock.setValue(this.genererMock());
+            },
+            nouveauParam() {
+                this.ajouterNouveauParam(this.nouveauParam);
             }
         },
         methods: {
@@ -91,22 +107,42 @@
                     }
                     mockAvecNouveauParam.push(obj);
                 });
-                this.mock.setValue(JSON.stringify(mockAvecNouveauParam, null, "\t"));
-            }
-        },
-        mounted() {
-            this.mock = CodeMirror.fromTextArea(document.getElementById('mockEditor'), { mode: JsMode });
-            this.mock.setSize("425", "400");
-        },
-        watch: {
-            model() {
-                this.mock.setValue(this.genererMock());
+                this.mock.setValue(this.convertirJsonEnString(mockAvecNouveauParam));
             },
-            nbrMock() {
-                this.mock.setValue(this.genererMock());
+            trierParametres() {
+                var mockParametresTries = [];
+
+                this.mockFormatteJson.forEach(obj => {
+                    var objetParamsTries = {};
+                    var clefsTries = this.obtenirClefsTries(obj);
+
+                    clefsTries.forEach(clef => {
+                        objetParamsTries[clef] = obj[clef];
+                    });
+
+                    mockParametresTries.push(objetParamsTries);
+                });
+
+                this.mock.setValue(this.convertirJsonEnString(mockParametresTries));
             },
-            nouveauParam() {
-                this.ajouterNouveauParam(this.nouveauParam);
+            convertirJsonEnString(model) {
+                return JSON.stringify(model, null, "\t");
+            },
+            obtenirClefsTries(objet) {
+                var clefsTries = Object.keys(objet).sort();
+                const index = clefsTries.findIndex(element => {
+                    return element.toLowerCase() === 'id';
+                });
+
+                if (index < 1) {
+                    return clefsTries
+                }
+
+                const swapTempVar = clefsTries[0];
+                clefsTries[0] = clefsTries[index];
+                clefsTries[index] = swapTempVar;
+
+                return clefsTries;
             }
         }
     };
