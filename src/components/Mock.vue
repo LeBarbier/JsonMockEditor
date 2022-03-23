@@ -10,6 +10,8 @@
         </div>
 
         <button class="obtenirModelButton" id="obtenirModel" @click="obtenirModel">Obtenir model</button>
+
+        <button class="genererId" @click="genererIds">Générer Ids</button>
     </div>
 </template>
 
@@ -143,6 +145,34 @@
                 clefsTries[index] = swapTempVar;
 
                 return clefsTries;
+            },
+            genererIds() {
+                var indexExistants = Array.from(new Set(this.mockFormatteJson.map(objet => objet.Id)));
+                console.log(indexExistants);
+                var index = 0;
+
+                // Boucler sur les mocks pour remplir les Ids
+                this.mockFormatteJson.forEach(mock => {
+                    // find next available ID
+                    while (indexExistants.includes(index)) {
+                        index++;
+                    }
+
+                    if (mock.Id === undefined || mock.Id === 0 || mock.Id === '') {
+                        mock.Id = index;
+                        index++;
+                    }
+                });
+                console.log(this.mockFormatteJson.sort(this.compare));
+            },
+            compare(a, b) {
+                if (a.Id < b.Id) {
+                    return -1;
+                }
+                if (a.Id > b.Id) {
+                    return 1;
+                }
+                return 0;
             }
         }
     };
